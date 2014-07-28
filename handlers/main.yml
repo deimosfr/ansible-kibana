@@ -1,0 +1,11 @@
+---
+
+# Kibana handlers
+
+# reset rights
+- name: adapt kibana config
+  file: path={{ kibana_path }} owner=www-data group=www-data recurse=yes
+
+# set kibana config url
+- name: reset rights
+  lineinfile: 'dest=/usr/share/nginx/www/kibana/src/config.js regexp="\s+elasticsearch:" line="     elasticsearch: \"http://{{dns_url_kibana}}:9200\"," backup=yes backrefs=yes'
