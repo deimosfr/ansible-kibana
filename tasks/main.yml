@@ -23,3 +23,9 @@
   notify:
     - adapt kibana config
     - reset rights
+
+- name: update elasticsearch config for security rules introduced in 1.4
+  lineinfile: "dest=/etc/elasticsearch/elasticsearch.yml line='http.cors.enabled: true' state=present"
+  when: es_version >= 1.4
+  notify: restart elasticsearch service
+

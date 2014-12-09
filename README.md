@@ -22,6 +22,8 @@ dns_url_kibana: kibana.domain.lan
 kibana_path: /usr/share/nginx/www/kibana
 # Kibana version from GitHub tag
 kibana_tag_version: v3.1.0
+# ES version
+es_version: 1.4
 ```
 
 Examples

@@ -9,3 +9,6 @@
 # set kibana config url
 - name: reset rights
   lineinfile: 'dest=/usr/share/nginx/www/kibana/src/config.js regexp="\s+elasticsearch:" line="     elasticsearch: \"http://{{dns_url_kibana}}:9200\"," backup=yes backrefs=yes'
+
+- name: restart elasticsearch service
+  service: name=elasticsearch state=restarted
