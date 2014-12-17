@@ -1,0 +1,9 @@
+# URL address to reach kibana
+#dns_url_kibana: kibana.domain.lan
+dns_url_kibana: kibana
+# # Folder to store Kibana
+kibana_path: /usr/share/nginx/www/kibana
+# # Kibana version from GitHub tag
+kibana_tag_version: v3.1.2
+# # ES version
+es_version: 1.4
