@@ -1,0 +1,29 @@
+---
+
+# Kibana installation
+
+# install web server and dependancies
+- name: install kibana dependencies
+  apt: name={{ item }} state=present force=yes
+  with_items:
+    - git
+
+- stat: path={{kibana_path}}
+  register: kibana_folder
+
+- shell: git --git-dir={{kibana_path}}/.git/ describe --tags
+  register: kibana_current_version
+  changed_when: false
+  when: kibana_folder.stat.exists == true
+
+# clone repository
+- git: repo=https://github.com/elasticsearch/kibana.git dest={{ kibana_path }} version={{ kibana_full_version }}
+  when: kibana_folder.stat.exists == false or kibana_current_version.stdout != "{{kibana_full_version}}"
+  notify:
+    - adapt kibana config
+    - reset rights
+
+- name: update elasticsearch config for security rules introduced in 1.4
+  lineinfile: "dest=/etc/elasticsearch/elasticsearch.yml line='http.cors.enabled: true' state=present"
+  when: es_version >= 1.4
+  notify: restart elasticsearch service

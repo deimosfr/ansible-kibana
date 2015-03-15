@@ -1,7 +1,5 @@
 ---
 
-# Kibana handlers
-
 # reset rights
 - name: adapt kibana config
   file: path={{ kibana_path }} owner=www-data group=www-data recurse=yes
@@ -12,3 +10,6 @@
 
 - name: restart elasticsearch service
   service: name=elasticsearch state=restarted
+
+- name: remove Kibana archive
+  file: path=/tmp/kibana-{{kibana_full_version}}.tgz state=absent force=yes

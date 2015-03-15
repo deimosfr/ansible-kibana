@@ -1,0 +1,50 @@
+---
+
+- name: check if kibana is already installed
+  stat: path="{{ kibana_path }}/kibana-{{ kibana_full_version }}-linux-x64/bin/kibana"
+  changed_when: false
+  register: kibana_installed
+
+- name: get Kibana archive
+  get_url: url=https://download.elasticsearch.org/kibana/kibana/kibana-{{kibana_full_version}}-linux-x64.tar.gz dest=/tmp/kibana-{{kibana_full_version}}.tgz
+  when: kibana_installed.stat.exists == false
+
+- name: untar kibana
+  unarchive: src=/tmp/kibana-{{kibana_full_version}}.tgz dest={{kibana_path}} copy=no
+  notify:
+    - remove Kibana archive
+  when: kibana_installed.stat.exists == false
+
+- name: set Kibana configuration
+  template: src=kibana4.yml.j2 dest={{ kibana_path }}/kibana-{{ kibana_full_version }}-linux-x64/config/kibana.yml owner=www-data group=www-data mode=0644
+
+# Systemd
+- name: check if running on systemd
+  command: cat /proc/1/cmdline
+  changed_when: false
+  register: systemd
+
+- name: add Kibana systemd configuration
+  template: src='kibana4_systemd.j2' dest='/lib/systemd/system/kibana.service' owner=root group=root mode=0640
+  when: "'systemd' in systemd.stdout"
+
+- name: add Kibana systemd symlink
+  file: src=/lib/systemd/system/kibana.service dest=/etc/systemd/system/multi-user.target.wants/kibana.service state=link
+  when: "'systemd' in systemd.stdout"
+  notify: reload systemd
+
+- meta: flush_handlers
+  when: "'systemd' in systemd.stdout"
+
+- name: reload systemd
+  shell: systemctl daemon-reload
+  changed_when: false
+  when: "'systemd' in systemd.stdout"
+
+# Init
+- name: add Kibana init configuration
+  template: src='kibana4_init.j2' dest='/etc/init.d/kibana' owner=root group=root mode=0755
+  when: "'systemd' not in systemd.stdout"
+
+- name: ensure kibana is started
+  service: name=kibana runlevel=default state=started enabled=yes
