@@ -34,12 +34,12 @@
   notify: reload systemd
 
 - meta: flush_handlers
-  when: "'systemd' in systemd.stdout"
+  when: "'systemd' in systemd.stdout and kibana_manage_service"
 
 - name: reload systemd
   shell: systemctl daemon-reload
   changed_when: false
-  when: "'systemd' in systemd.stdout"
+  when: "'systemd' in systemd.stdout and kibana_manage_service"
 
 # Init
 - name: add Kibana init configuration
@@ -48,3 +48,4 @@
 
 - name: ensure kibana is started
   service: name=kibana runlevel=default state=started enabled=yes
+  when: kibana_manage_service

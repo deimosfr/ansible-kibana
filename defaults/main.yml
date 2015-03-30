@@ -5,6 +5,9 @@ dns_url_kibana: kibana
 # Folder to store Kibana
 kibana_path: /usr/share/nginx/www/kibana
 
+# Manage service
+kibana_manage_service: True
+
 # Set Kibana major version
 kibana_major_version: 4
 #kibana_major_version: 3
