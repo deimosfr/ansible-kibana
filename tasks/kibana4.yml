@@ -17,7 +17,7 @@
 
 - name: set Kibana configuration
   template: src=kibana4.yml.j2 dest={{ kibana_path }}/kibana-{{ kibana_full_version }}-linux-x64/config/kibana.yml owner=www-data group=www-data mode=0644
-  notify: reload kibana service
+  notify: restart kibana service
 
 # Systemd
 - name: check if running on systemd
