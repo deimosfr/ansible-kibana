@@ -11,5 +11,8 @@
 - name: restart elasticsearch service
   service: name=elasticsearch state=restarted
 
+- name: reload kibana service
+  service: name=kibana state=reloaded
+
 - name: remove Kibana archive
   file: path=/tmp/kibana-{{kibana_full_version}}.tgz state=absent force=yes
