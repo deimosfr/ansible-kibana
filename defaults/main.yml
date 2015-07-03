@@ -14,7 +14,7 @@ kibana_major_version: 4
 
 ## Kibana version
 # For v4 use latest version (https://www.elastic.co/downloads/kibana)
-kibana_full_version: 4.0.1
+kibana_full_version: 4.1.1
 # For v3, use GitHub tag
 #kibana_full_version: v3.1.2
 

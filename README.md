@@ -32,7 +32,7 @@ kibana_major_version: 4
 
 ## Kibana version
 # For v4 use latest version (https://www.elastic.co/downloads/kibana)
-kibana_full_version: 4.0.1
+kibana_full_version: 4.1.1
 # For v3, use GitHub tag
 #kibana_full_version: v3.1.2
 
@@ -91,7 +91,7 @@ For Kibana 4:
         kibana.domain.lan:
           - listen 80"
           - server_name kibana.domain.lan
-          - access_log /var/log/nginx/kibana.domain.lan_access.log nm_combined
+          - access_log /var/log/nginx/kibana.domain.lan_access.log combined
           - error_log /var/log/nginx/kibana.domain.lan_error.log
           - error_page   500 502 503 504  /50x.html
           - location = /50x.html {
